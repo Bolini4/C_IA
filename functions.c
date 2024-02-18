@@ -86,6 +86,7 @@ float *CalculerThirdLayer10(DenseLayer *layer, float input[]) {
         for (int j = 0; j < numberOfInput; j++) {
             output[i] += layer->weights[i][j] * input[j];
         }
+        //output[i] = relu(output[i]); dont forget to add this
     }
 
     return output;
