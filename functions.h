@@ -11,8 +11,6 @@
 
 
 typedef struct {
-    int inputSize;
-    int outputSize;
     float **weights;
     float *biases;
 } DenseLayer;
