@@ -5,6 +5,9 @@
 #include <assert.h>
 #include <stddef.h>
 
+
+
+// ROWS & COLS = 28 (defined in the .hs)
 void flattenImage(unsigned char **image, float flattenedImage[FLATTENED_SIZE]) {
     int index = 0;
     for (int i = 0; i < ROWS; i++) {
@@ -72,6 +75,7 @@ float *CalculerSecondLayer1092(DenseLayer *layer, float input[]) {
 float *CalculerThirdLayer10(DenseLayer *layer, float input[]) {
     // Allouer dynamiquement de la mémoire pour le vecteur de sortie
     int outputSize = 10;
+    int numberOfInput = 1092;
     float *output = malloc(outputSize * sizeof(float));
     if (output == NULL) {
         exit(1);
@@ -79,7 +83,7 @@ float *CalculerThirdLayer10(DenseLayer *layer, float input[]) {
 
     for (int i = 0; i < outputSize; i++) {
         output[i] = layer->biases[i];
-        for (int j = 0; j < layer->inputSize; j++) {
+        for (int j = 0; j < numberOfInput; j++) {
             output[i] += layer->weights[i][j] * input[j];
         }
     }

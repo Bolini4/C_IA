@@ -35,7 +35,7 @@ printf("Loading image...fdjsklfdskjfldsjfkdlsfdlksj\n");
    fclose(pFichier);               //Fermeture du fichier contenant l'image
 
    ConvertRGB2Gray(&bitmap);
-
+//Flatened size defined in the .h (28*28)
    float flatImage[FLATTENED_SIZE];
    flattenImage(bitmap.mPixelsGray, flatImage);
 
@@ -69,6 +69,9 @@ for (int i = 0; i < 10; i++) {
 // printf("%f\n", output1[100]);
 
     DesallouerBMP(&bitmap);
+    free(output1);
+    free(output2);
+    free(output3);
 
 
     
