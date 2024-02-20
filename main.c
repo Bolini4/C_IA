@@ -44,10 +44,16 @@ printf("Loading image...\n");
 // Put image has /255 like in python to normalize the data
 for (int i = 0; i < 784; i++) {
     flatImage[i] = flatImage[i] / 255.000000;
-    printf("%f\n", flatImage[i]);
+    
 }
 
-
+float sumImage = 0;
+sumImage = sumVector(flatImage, 784);
+float sumBiases1 = sumVector(Layer1.biases, 64);
+float sumWeights1 = sumVector2D(Layer1.weights, 64, 784);
+printf("Sum of image: %.*f\n",DBL_DIG, sumImage);
+printf("Sum of biases1: %.*f\n",DBL_DIG, sumBiases1);
+printf("Sum of weights1: %.*f\n",DBL_DIG, sumWeights1);
 
     float *output1 = CalculerFirstLayer64(&Layer1, flatImage);
     //Expcected sum of output1: 16

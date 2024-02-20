@@ -26,5 +26,6 @@ void softmax(float *input, int input_len);
 float relu(float x);
 
 float sumVector(float *vector, int size);
+float sumVector2D(float **vector, int size, int size2);
 
 #endif /* FLATTEN_IMAGE_H */

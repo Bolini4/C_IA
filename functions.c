@@ -14,6 +14,17 @@ float sumVector(float *vector, int size) {
     return sum;
 }
 
+float sumVector2D(float **vector, int size, int size2) {
+    float sum = 0;
+    for (int i = 0; i < size; i++) {
+        for(int j = 0; j < size2; j++)
+        {
+            sum += vector[i][j];
+        }
+    }
+    return sum;
+}
+
 // ROWS & COLS = 28 (defined in the .hs)
 void flattenImage(unsigned char **image, float flattenedImage[FLATTENED_SIZE]) {
     int index = 0;
@@ -37,26 +48,26 @@ float *CalculerFirstLayer64(DenseLayer *layer, float input[]) {
     int outputSize = 64;
     int numberOfInput = 784;
 
-    //On alloue la taille de sortie du tableau (64) et on vériifie si l'allocation a bien été faite sino ça retourne NULL
+    // On alloue la taille de sortie du tableau (64) et on vérifie si l'allocation a bien été faite sinon ça retourne NULL
     float *output = malloc(outputSize * sizeof(float));
     if (output == NULL) {
         exit(1);
     }
 
-    //on passe 64 fois (par rapport aux nombre de lignes)
+    // On passe 64 fois (par rapport aux nombres de lignes)
     for (int i = 0; i < outputSize; i++) {
         output[i] = layer->biases[i];
-        //on fait 784 opérations pour calculer la matrice de sortie
+        // On fait 784 opérations pour calculer la matrice de sortie
         for (int j = 0; j < numberOfInput; j++) {
-            output[i] = output[i] + (layer->weights[i][j] * input[j]);
-            // printf("%f\n", layer->weights[i][j]);
+            output[i] += (layer->weights[i][j] * input[j]);  // Ajout ici plutôt que d'écraser
         }
-        // à la fin on applique la fonction relu
+        // À la fin, on applique la fonction relu
         output[i] = relu(output[i]);
     }
 
     return output;
 }
+
 
 float *CalculerSecondLayer1092(DenseLayer *layer, float input[]) {
     // Allouer dynamiquement de la mémoire pour le vecteur de sortie
