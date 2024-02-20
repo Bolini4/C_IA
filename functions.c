@@ -6,13 +6,20 @@
 #include <stddef.h>
 
 
+float sumVector(float *vector, int size) {
+    float sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += vector[i];
+    }
+    return sum;
+}
 
 // ROWS & COLS = 28 (defined in the .hs)
 void flattenImage(unsigned char **image, float flattenedImage[FLATTENED_SIZE]) {
     int index = 0;
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
-            flattenedImage[index++] = image[i][j];
+            flattenedImage[index++] = (float)image[i][j];
         }
     }
 }
@@ -41,7 +48,7 @@ float *CalculerFirstLayer64(DenseLayer *layer, float input[]) {
         output[i] = layer->biases[i];
         //on fait 784 opérations pour calculer la matrice de sortie
         for (int j = 0; j < numberOfInput; j++) {
-            output[i] = output[i] + (layer->weights[j][i] * input[j]);
+            output[i] = output[i] + (layer->weights[i][j] * input[j]);
         }
         // à la fin on applique la fonction relu
         output[i] = relu(output[i]);
@@ -54,6 +61,7 @@ float *CalculerSecondLayer1092(DenseLayer *layer, float input[]) {
     // Allouer dynamiquement de la mémoire pour le vecteur de sortie
     int outputSize = 1092;
     int numberOfInput = 64;
+
     //On alloue la taille de sortie du tableau (1092) et on vériifie si l'allocation a bien été faite sino ça retourne NULL
     float *output2 = malloc(outputSize * sizeof(float));
     if (output2 == NULL) {
@@ -64,7 +72,7 @@ float *CalculerSecondLayer1092(DenseLayer *layer, float input[]) {
         output2[i] = layer->biases[i];
         for (int j = 0; j < numberOfInput; j++) {
             
-            output2[i] = output2[i]+ (layer->weights[j][i] * input[j]);
+            output2[i] = output2[i]+ (layer->weights[i][j] * input[j]);
         }
         output2[i] = relu(output2[i]);
     }
@@ -128,6 +136,7 @@ void loadWeightsAndBiases(DenseLayer *layer, const char *weightsFile, const char
     }
     for (int i = 0; i < outputSize; i++) {
         fscanf(biases_fp, "%f", &layer->biases[i]);
+        printf("%d,%f\n",i, layer->biases[i]);
     }
     fclose(biases_fp);
 }

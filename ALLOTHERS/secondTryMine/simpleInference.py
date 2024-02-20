@@ -32,7 +32,17 @@ for layer_activation in activations:
 
 
 # Supposons que "activations" contient les activations du premier étage
-first_layer_activations = activations[2]
+first_layer_activations = activations[0]
+second_layer_activations = activations[1]
+third_layer_activations = activations[2]
 
 # Sauvegarder les activations dans un fichier texte
-np.savetxt('activations_third_layer.txt', first_layer_activations)
+# np.savetxt('activations_third_layer.txt', first_layer_activations)
+
+sum1 = np.sum(first_layer_activations)
+sum2 = np.sum(second_layer_activations)
+sum3 = np.sum(third_layer_activations)
+
+print(sum1)
+print(sum2)
+print(sum3)

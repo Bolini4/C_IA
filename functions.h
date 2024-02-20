@@ -25,4 +25,6 @@ float *CalculerThirdLayer10(DenseLayer *layer, float input[]);
 void softmax(float *input, int input_len);
 float relu(float x);
 
+float sumVector(float *vector, int size);
+
 #endif /* FLATTEN_IMAGE_H */

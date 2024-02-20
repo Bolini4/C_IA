@@ -9,19 +9,16 @@ int main(int argc, char* argv[]){
 
     DenseLayer Layer1, Layer2, Layer3;
 
+
     printf("Loading weights and biases...\n");
     //loading of layer 1 OK
-    loadWeightsAndBiases(&Layer1, "./weightandbiases/layer_1_weights.txt", "./weightandbiases/layer_1_biases.txt", 64, 784);
-    loadWeightsAndBiases(&Layer2, "./weightandbiases/layer_2_weights.txt", "./weightandbiases/layer_2_biases.txt", 1092, 64);
-    loadWeightsAndBiases(&Layer3, "./weightandbiases/layer_3_weights.txt", "./weightandbiases/layer_3_biases.txt", 10, 1092);
+    loadWeightsAndBiases(&Layer1, "./weightandbiases/layer_1_weights.txt", "./weightandbiases/layer_1_biases.txt", 784, 64);
+    loadWeightsAndBiases(&Layer2, "./weightandbiases/layer_2_weights.txt", "./weightandbiases/layer_2_biases.txt", 64, 1092);
+    loadWeightsAndBiases(&Layer3, "./weightandbiases/layer_3_weights.txt", "./weightandbiases/layer_3_biases.txt", 1092, 10);
     printf("Weights and biases loaded successfully\n");
 
 
-
-double test = 0.123456789;
-printf("%.*f\n",DBL_DIG, test);
-
-printf("Loading image...fdjsklfdskjfldsjfkdlsfdlksj\n");
+printf("Loading image...\n");
 
    BMP bitmap;
    FILE* pFichier=NULL;
@@ -45,28 +42,34 @@ for (int i = 0; i < 784; i++) {
     flatImage[i] = flatImage[i] / 255.000000;
 }
 
-// for (int i = 0; i < 784; i++) {
-//     printf("%.*f\n",DBL_DIG, flatImage[i]);
-// }
 
     float *output1 = CalculerFirstLayer64(&Layer1, flatImage);
-    printf("%f\n", Layer1.weights[783][63]);
-    //OUTPUT OF LAYER 1 IS LIKE IN PYTHON
+    printf("%f\n", output1[63]);
+    //OUTPUT OF LAYER 1 IS LIKE IN PYTHON SAME SUM
     float *output2 = CalculerSecondLayer1092(&Layer2, output1);
-    //second layer looks to be OK but there is some problem d'arrondis...
+    //valeur aberrante sur l'addition
 
 
     float *output3 = CalculerThirdLayer10(&Layer3, output2);
 
-    printf("Output of layer 1: \n");
+float sum2 = 0;
+
+
+sum2 = sumVector(output2, 1092);
 
     softmax(output3, 10);
-for (int i = 0; i < 10; i++) {
-    printf("%.*f\n",DBL_DIG, output3[i]);
-    
-}
 
-// printf("%f\n", output1[100]);
+printf("Sum of output2: %.*f\n",DBL_DIG, sum2);
+
+    printf("Output of layer 2: \n");
+    for (int i = 0; i < 1092; i++) {
+        if (output2[i] > 10000)
+        {
+            printf("%d\n", i);
+            printf("%f\n", output2[i]);
+            printf("%f\n", Layer2.biases[i]);
+        }
+    }
 
     DesallouerBMP(&bitmap);
     free(output1);
