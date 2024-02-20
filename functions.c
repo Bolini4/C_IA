@@ -49,6 +49,7 @@ float *CalculerFirstLayer64(DenseLayer *layer, float input[]) {
         //on fait 784 opérations pour calculer la matrice de sortie
         for (int j = 0; j < numberOfInput; j++) {
             output[i] = output[i] + (layer->weights[i][j] * input[j]);
+            // printf("%f\n", layer->weights[i][j]);
         }
         // à la fin on applique la fonction relu
         output[i] = relu(output[i]);
@@ -136,7 +137,6 @@ void loadWeightsAndBiases(DenseLayer *layer, const char *weightsFile, const char
     }
     for (int i = 0; i < outputSize; i++) {
         fscanf(biases_fp, "%f", &layer->biases[i]);
-        printf("%d,%f\n",i, layer->biases[i]);
     }
     fclose(biases_fp);
 }
