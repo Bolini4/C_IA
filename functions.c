@@ -122,10 +122,13 @@ float *CalculerThirdLayer10(DenseLayer *layer, float input[]) {
 
 
 void loadWeightsAndBiases(DenseLayer *layer, const char *weightsFile, const char *biasesFile, int inputSize, int outputSize) {
-    // Charger les poids à partir du fichier weightsFile
-    layer->weights = (float**)malloc(outputSize * sizeof(float*));
-    for (int i = 0; i < outputSize; i++) {
-        layer->weights[i] = (float*)malloc(inputSize * sizeof(float));
+
+//Faut inverser pour garder la logique donc on met INPUTSIZE = 784 et OUTPUTSIZE = 64
+
+    //Partie 1 : Allocation de la mémoire
+    layer->weights = (float**)malloc(inputSize * sizeof(float*));
+    for (int i = 0; i < inputSize; i++) {
+        layer->weights[i] = (float*)malloc(outputSize * sizeof(float));
     }
 
     layer->biases = (float*)malloc(outputSize * sizeof(float));
@@ -137,8 +140,8 @@ void loadWeightsAndBiases(DenseLayer *layer, const char *weightsFile, const char
         exit(1);
     }
     
-    for (int i = 0; i < outputSize; i++) {
-        for (int j = 0; j < inputSize; j++) {
+    for (int i = 0; i < inputSize; i++) {
+        for (int j = 0; j < outputSize; j++) {
             if (fscanf(weights_fp, "%f ", &layer->weights[i][j]) != 1) {
                 fprintf(stderr, "Erreur lors de la lecture des poids\n");
                 exit(1);
