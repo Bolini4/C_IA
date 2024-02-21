@@ -63,6 +63,7 @@ softmax(output3, 10);
 for (int i = 0; i < 10; i++) {
     printf("output3[%d]: %.*f\n", i, DBL_DIG, output3[i]);
 }
+printf("%ld\n", sizeof(Layer1.biases));
 
     DesallouerBMP(&bitmap);
     free(output1);
