@@ -16,6 +16,9 @@ typedef struct {
 } DenseLayer;
 
 void loadWeightsAndBiases(DenseLayer *layer, const char *weightsFile, const char *biasesFile, int inputSize, int outputSize);
+
+void loadWeightsAndBiasesLayer1(DenseLayer *layer, const char *weightsFile, const char *biasesFile);
+
 void flattenImage(unsigned char **image, float flattenedImage[FLATTENED_SIZE]);
 
 float *CalculerFirstLayer64(DenseLayer *layer, float input[]);
@@ -27,5 +30,6 @@ float relu(float x);
 
 float sumVector(float *vector, int size);
 float sumVector2D(float **vector, int size, int size2);
+float sumVector2DFixed(float **vector, int size, int element);
 
 #endif /* FLATTEN_IMAGE_H */

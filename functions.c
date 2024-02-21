@@ -25,6 +25,15 @@ float sumVector2D(float **vector, int size, int size2) {
     return sum;
 }
 
+
+float sumVector2DFixed(float **vector, int size, int element) {
+    float sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += vector[element][i];
+    }
+    return sum;
+}
+
 // ROWS & COLS = 28 (defined in the .hs)
 void flattenImage(unsigned char **image, float flattenedImage[FLATTENED_SIZE]) {
     int index = 0;
@@ -59,7 +68,7 @@ float *CalculerFirstLayer64(DenseLayer *layer, float input[]) {
         output[i] = layer->biases[i];
         // On fait 784 opérations pour calculer la matrice de sortie
         for (int j = 0; j < numberOfInput; j++) {
-            output[i] += (layer->weights[i][j] * input[j]);  // Ajout ici plutôt que d'écraser
+            output[i] += (layer->weights[j][i] * input[j]); //on ajoute la multiplication matricielle
         }
         // À la fin, on applique la fonction relu
         output[i] = relu(output[i]);
@@ -174,3 +183,47 @@ void softmax(float *input, int input_len) {
     }
 }
 
+
+void loadWeightsAndBiasesLayer1(DenseLayer *layer, const char *weightsFile, const char *biasesFile) {
+    // Charger les poids à partir du fichier weightsFile
+    int BiaisSize = 64;
+
+    int WeightsLines = 784;
+    int WeightsColumns = 64; 
+
+    layer->weights = (float**)malloc(WeightsLines * sizeof(float*));
+    for (int i = 0; i < WeightsLines; i++) {
+        layer->weights[i] = (float*)malloc(WeightsColumns * sizeof(float));
+    }
+
+    layer->biases = (float*)malloc(BiaisSize * sizeof(float));
+
+    printf("Loading weights from %s\n", weightsFile);
+    FILE *weights_fp = fopen(weightsFile, "r");
+    if (weights_fp == NULL) {
+        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", weightsFile);
+        exit(1);
+    }
+    
+    for (int i = 0; i < WeightsLines; i++) {
+        for (int j = 0; j < WeightsColumns; j++) {
+            if (fscanf(weights_fp, "%f ", &layer->weights[i][j]) != 1) {
+                fprintf(stderr, "Erreur lors de la lecture des poids\n");
+                exit(1);
+            }
+        }
+    }
+    
+    fclose(weights_fp);
+
+    // Charger les biais à partir du fichier biasesFile
+    FILE *biases_fp = fopen(biasesFile, "r");
+    if (biases_fp == NULL) {
+        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", biasesFile);
+        exit(1);
+    }
+    for (int i = 0; i < BiaisSize; i++) {
+        fscanf(biases_fp, "%f", &layer->biases[i]);
+    }
+    fclose(biases_fp);
+}
