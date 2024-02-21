@@ -19,8 +19,9 @@ int main(int argc, char* argv[]){
 
     loadWeightsAndBiasesLayer1(&Layer1, "./weightandbiases/layer_1_weights.txt", "./weightandbiases/layer_1_biases.txt");
     loadWeightsAndBiasesLayer2(&Layer2, "./weightandbiases/layer_2_weights.txt", "./weightandbiases/layer_2_biases.txt");
+    loadWeightsAndBiasesLayer3(&Layer3, "./weightandbiases/layer_3_weights.txt", "./weightandbiases/layer_3_biases.txt");
     printf("Weights and biases loaded successfully\n");
-    printf("%f\n", Layer2.weights[62][1090]);
+    printf("%f\n", Layer3.weights[1091][9]);
     
 
 
@@ -54,7 +55,7 @@ float *output1 = CalculerFirstLayer64(&Layer1, flatImage);
 //DANS CETTE CONFIGURATION DE CHARGEMENT, LE LAYER 1 EST OK!!!!
 float *output2 = CalculerSecondLayer1092(&Layer2, output1);
 //Dans cette config, La somme de LAYER 2 est OK
-//     float *output3 = CalculerThirdLayer10(&Layer3, output2);
+float *output3 = CalculerThirdLayer10(&Layer3, output2);
 
 float sum2 = 0;
 
@@ -63,18 +64,17 @@ for (int i = 0; i < 1092; i++) {
 }
 sum2 = sumVector(output2, 1092);
 
-//     softmax(output3, 10);
+softmax(output3, 10);
 
 printf("Sum of output2: %.*f\n",DBL_DIG, sum2);
-// // for (int i = 0; i < 10; i++) {
-// //     printf("output3[%d]: %.*f\n", i, DBL_DIG, output3[i]);
-// // }
+for (int i = 0; i < 10; i++) {
+    printf("output3[%d]: %.*f\n", i, DBL_DIG, output3[i]);
+}
 
-//     DesallouerBMP(&bitmap);
-//     free(output1);
-//     free(output2);
-//     free(output3);
-
+    DesallouerBMP(&bitmap);
+    free(output1);
+    free(output2);
+    free(output3);
 
    return 0;
 }

@@ -19,6 +19,7 @@ void loadWeightsAndBiases(DenseLayer *layer, const char *weightsFile, const char
 
 void loadWeightsAndBiasesLayer1(DenseLayer *layer, const char *weightsFile, const char *biasesFile);
 void loadWeightsAndBiasesLayer2(DenseLayer *layer, const char *weightsFile, const char *biasesFile);
+void loadWeightsAndBiasesLayer3(DenseLayer *layer, const char *weightsFile, const char *biasesFile);
 
 void flattenImage(unsigned char **image, float flattenedImage[FLATTENED_SIZE]);
 
