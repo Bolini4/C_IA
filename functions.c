@@ -92,8 +92,7 @@ float *CalculerSecondLayer1092(DenseLayer *layer, float input[]) {
     for (int i = 0; i < outputSize; i++) {
         output2[i] = layer->biases[i];
         for (int j = 0; j < numberOfInput; j++) {
-            
-            output2[i] = output2[i]+ (layer->weights[i][j] * input[j]);
+            output2[i] += (layer->weights[j][i] * input[j]);
         }
         output2[i] = relu(output2[i]);
     }
@@ -190,6 +189,50 @@ void loadWeightsAndBiasesLayer1(DenseLayer *layer, const char *weightsFile, cons
 
     int WeightsLines = 784;
     int WeightsColumns = 64; 
+
+    layer->weights = (float**)malloc(WeightsLines * sizeof(float*));
+    for (int i = 0; i < WeightsLines; i++) {
+        layer->weights[i] = (float*)malloc(WeightsColumns * sizeof(float));
+    }
+
+    layer->biases = (float*)malloc(BiaisSize * sizeof(float));
+
+    printf("Loading weights from %s\n", weightsFile);
+    FILE *weights_fp = fopen(weightsFile, "r");
+    if (weights_fp == NULL) {
+        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", weightsFile);
+        exit(1);
+    }
+    
+    for (int i = 0; i < WeightsLines; i++) {
+        for (int j = 0; j < WeightsColumns; j++) {
+            if (fscanf(weights_fp, "%f ", &layer->weights[i][j]) != 1) {
+                fprintf(stderr, "Erreur lors de la lecture des poids\n");
+                exit(1);
+            }
+        }
+    }
+    
+    fclose(weights_fp);
+
+    // Charger les biais à partir du fichier biasesFile
+    FILE *biases_fp = fopen(biasesFile, "r");
+    if (biases_fp == NULL) {
+        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", biasesFile);
+        exit(1);
+    }
+    for (int i = 0; i < BiaisSize; i++) {
+        fscanf(biases_fp, "%f", &layer->biases[i]);
+    }
+    fclose(biases_fp);
+}
+
+void loadWeightsAndBiasesLayer2(DenseLayer *layer, const char *weightsFile, const char *biasesFile) {
+    // Charger les poids à partir du fichier weightsFile
+    int BiaisSize = 1092;
+
+    int WeightsLines = 64;
+    int WeightsColumns = 1092; 
 
     layer->weights = (float**)malloc(WeightsLines * sizeof(float*));
     for (int i = 0; i < WeightsLines; i++) {

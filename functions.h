@@ -18,6 +18,7 @@ typedef struct {
 void loadWeightsAndBiases(DenseLayer *layer, const char *weightsFile, const char *biasesFile, int inputSize, int outputSize);
 
 void loadWeightsAndBiasesLayer1(DenseLayer *layer, const char *weightsFile, const char *biasesFile);
+void loadWeightsAndBiasesLayer2(DenseLayer *layer, const char *weightsFile, const char *biasesFile);
 
 void flattenImage(unsigned char **image, float flattenedImage[FLATTENED_SIZE]);
 

@@ -14,11 +14,13 @@ int main(int argc, char* argv[]){
     printf("JE SUIS LA\n");
     //loading of layer 1 OK
     // loadWeightsAndBiases(&Layer1, "./weightandbiases/layer_1_weights.txt", "./weightandbiases/layer_1_biases.txt", 784, 64);
-    loadWeightsAndBiasesLayer1(&Layer1, "./weightandbiases/layer_1_weights.txt", "./weightandbiases/layer_1_biases.txt");
     // loadWeightsAndBiases(&Layer2, "./weightandbiases/layer_2_weights.txt", "./weightandbiases/layer_2_biases.txt", 64, 1092);
     // loadWeightsAndBiases(&Layer3, "./weightandbiases/layer_3_weights.txt", "./weightandbiases/layer_3_biases.txt", 1092, 10);
+
+    loadWeightsAndBiasesLayer1(&Layer1, "./weightandbiases/layer_1_weights.txt", "./weightandbiases/layer_1_biases.txt");
+    loadWeightsAndBiasesLayer2(&Layer2, "./weightandbiases/layer_2_weights.txt", "./weightandbiases/layer_2_biases.txt");
     printf("Weights and biases loaded successfully\n");
-    printf("%f\n", Layer1.weights[782][63]);
+    printf("%f\n", Layer2.weights[62][1090]);
     
 
 
@@ -47,27 +49,19 @@ for (int i = 0; i < 784; i++) {
     
 }
 
-float sumImage = 0;
-sumImage = sumVector(flatImage, 784);
-float sumBiases1 = sumVector(Layer1.biases, 64);
-float sumWeights1 = sumVector2D(Layer1.weights, 784, 64);
-// float sumWeights1_2 = sumVector2DFixed(Layer1.weights, 64, 64);
-printf("%f\n", Layer1.weights[63][781]);
-printf("Sum of image: %.*f\n",DBL_DIG, sumImage);
-printf("Sum of biases1: %.*f\n",DBL_DIG, sumBiases1);
-printf("Sum of weights1: %.*f\n",DBL_DIG, sumWeights1);
 
 float *output1 = CalculerFirstLayer64(&Layer1, flatImage);
 //DANS CETTE CONFIGURATION DE CHARGEMENT, LE LAYER 1 EST OK!!!!
-//     float *output2 = CalculerSecondLayer1092(&Layer2, output1);
+float *output2 = CalculerSecondLayer1092(&Layer2, output1);
+//Dans cette config, La somme de LAYER 2 est OK
 //     float *output3 = CalculerThirdLayer10(&Layer3, output2);
 
 float sum2 = 0;
 
-for (int i = 0; i < 64; i++) {
-    printf("output1[%d]: %.*f\n", i, DBL_DIG, output1[i]);
+for (int i = 0; i < 1092; i++) {
+    printf("output1[%d]: %.*f\n", i, DBL_DIG, output2[i]);
 }
-sum2 = sumVector(output1, 64);
+sum2 = sumVector(output2, 1092);
 
 //     softmax(output3, 10);
 
@@ -82,6 +76,5 @@ printf("Sum of output2: %.*f\n",DBL_DIG, sum2);
 //     free(output3);
 
 
-    
    return 0;
 }
